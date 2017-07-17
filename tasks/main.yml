@@ -1,0 +1,14 @@
+---
+# tasks file for nakahiro386.locale
+- block:
+  - include: locale_redhat.yml
+    when: ansible_distribution_major_version in ['5', '6']
+
+  - include: locale_redhat_7.yml
+    when: ansible_distribution_major_version | int >= 7
+
+  when: ansible_os_family == 'RedHat'
+  tags:
+    - locale
+    - config
+    - system

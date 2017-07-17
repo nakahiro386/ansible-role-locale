@@ -1,0 +1,31 @@
+---
+- block:
+  - name: get locale
+    command: "localectl status"
+    register: get_locale
+    check_mode: no
+    changed_when: no
+  - set_fact:
+      locale_status: "LANG={{ nakahiro386_locale }}"
+    check_mode: no
+    changed_when: no
+
+  - name: set locale to {{ nakahiro386_locale }}
+    command: "localectl set-locale LANG={{ nakahiro386_locale }}"
+    when: locale_status not in get_locale.stdout
+
+  - name: get locale
+    command: "localectl status"
+    register: get_locale
+    check_mode: no
+    changed_when: no
+
+  - name: check locale
+    assert:
+      that:
+        - "'LANG={{ nakahiro386_locale }}' in get_locale.stdout"
+    when: not ansible_check_mode
+  tags:
+    - locale
+    - config
+    - system

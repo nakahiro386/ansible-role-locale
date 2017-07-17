@@ -1,0 +1,25 @@
+---
+- block:
+  - name: set locale to {{ nakahiro386_locale }}
+    lineinfile:
+      dest: /etc/sysconfig/i18n
+      state: present
+      regexp: '^LANG=.*$'
+      line: 'LANG="{{ nakahiro386_locale }}"'
+
+  - name: get locale
+    command: "cat /etc/sysconfig/i18n"
+    register: get_locale
+    check_mode: no
+    changed_when: no
+
+  - name: check locale
+    assert:
+      that:
+        - "'LANG=\"{{ nakahiro386_locale }}\"' in get_locale.stdout"
+    when: not ansible_check_mode
+
+  tags:
+    - locale
+    - config
+    - system

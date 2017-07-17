@@ -1,0 +1,21 @@
+galaxy_info:
+  author: nakahiro386
+  description: Configure system locale.
+
+  license: MIT
+
+  min_ansible_version: 2.3
+
+  platforms:
+    - name: EL
+      versions:
+        - 5
+        - 6
+        - 7
+
+  galaxy_tags:
+    - locale
+    - config
+    - system
+
+dependencies: []
