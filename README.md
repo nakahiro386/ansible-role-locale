@@ -3,13 +3,15 @@ Role Name
 
 nakahiro386.locale
 
+Configure system locale.
+
 Requirements
 ------------
 
-* EL5, EL6
+* EL
   * None.
-* EL7
-  * `localectl`
+* Ubuntu
+  * `python-apt`
 
 Role Variables
 --------------

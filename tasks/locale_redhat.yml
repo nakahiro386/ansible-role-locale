@@ -1,14 +1,20 @@
 ---
 - block:
-  - name: set locale to {{ nakahiro386_locale }}
+  - name: get locale file location
+    set_fact:
+      nakahiro386_locale_file_location: "{{ vars['nakahiro386_locale_file_location_' +  ansible_os_family.lower()] }}"
+    check_mode: no
+    changed_when: no
+
+  - name: set {{ nakahiro386_locale }} to {{ nakahiro386_locale_file_location }}
     lineinfile:
-      dest: /etc/sysconfig/i18n
+      dest: "{{ nakahiro386_locale_file_location }}"
       state: present
       regexp: '^LANG=.*$'
       line: 'LANG="{{ nakahiro386_locale }}"'
 
   - name: get locale
-    command: "cat /etc/sysconfig/i18n"
+    command: "cat {{ nakahiro386_locale_file_location }}"
     register: get_locale
     check_mode: no
     changed_when: no

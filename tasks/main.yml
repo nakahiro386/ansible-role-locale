@@ -1,14 +1,30 @@
 ---
 # tasks file for nakahiro386.locale
 - block:
-  - include: locale_redhat.yml
-    when: ansible_distribution_major_version in ['5', '6']
+  - name: Install tools
+    apt:
+      name: "{{ item }}"
+      update_cache: yes
+      state: present
+    with_items: "{{ nakahiro386_ubuntu_lang_packs }}"
+    when: ansible_distribution == 'Ubuntu'
 
-  - include: locale_redhat_7.yml
-    when: ansible_distribution_major_version | int >= 7
+  - name: Ensure a locale exists.
+    locale_gen:
+      name: "{{ nakahiro386_locale }}"
+      state: present
+    when:
+      - ansible_os_family != 'RedHat'
 
-  when: ansible_os_family == 'RedHat'
+  - include: "locale_{{ ansible_os_family.lower() }}.yml"
+    when:
+      - ansible_service_mgr != 'systemd'
+
+  - include: locale_systemd.yml
+    when: ansible_service_mgr == 'systemd'
+
   tags:
     - locale
     - config
     - system
+
