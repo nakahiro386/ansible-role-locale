@@ -16,11 +16,11 @@
     when:
       - ansible_os_family != 'RedHat'
 
-  - include: "locale_{{ ansible_os_family.lower() }}.yml"
+  - include_tasks: "locale_{{ ansible_os_family.lower() }}.yml"
     when:
       - ansible_service_mgr != 'systemd'
 
-  - include: locale_systemd.yml
+  - include_tasks: locale_systemd.yml
     when: ansible_service_mgr == 'systemd'
 
   tags:
