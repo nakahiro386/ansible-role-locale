@@ -4,7 +4,7 @@ galaxy_info:
 
   license: MIT
 
-  min_ansible_version: 2.4
+  min_ansible_version: 2.7
 
   # https://galaxy.ansible.com/api/v1/platforms/
   platforms:
@@ -17,6 +17,7 @@ galaxy_info:
         - precise
         - trusty
         - xenial
+        - bionic
 
   galaxy_tags:
     - locale

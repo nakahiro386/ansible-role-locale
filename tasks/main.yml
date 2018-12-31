@@ -3,10 +3,9 @@
 - block:
   - name: Install tools
     apt:
-      name: "{{ item }}"
+      name: "{{ nakahiro386_ubuntu_lang_packs }}"
       update_cache: yes
       state: present
-    with_items: "{{ nakahiro386_ubuntu_lang_packs }}"
     when: ansible_distribution == 'Ubuntu'
 
   - name: Ensure a locale exists.
