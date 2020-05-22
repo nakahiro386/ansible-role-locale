@@ -8,12 +8,38 @@
       state: present
     when: ansible_distribution == 'Ubuntu'
 
+  - name: Install lang_packs
+    dnf:
+      name: "{{ nakahiro386_centos_lang_packs }}"
+    when:
+      - ansible_distribution == 'CentOS'
+      - ansible_distribution_major_version|int >= 8
+
   - name: Ensure a locale exists.
     locale_gen:
       name: "{{ nakahiro386_locale }}"
       state: present
     when:
       - ansible_os_family != 'RedHat'
+
+  # "locale_gen" module fails on CentOS 6 and CentOS 7 · Issue #44708 · ansible/ansible
+  # https://github.com/ansible/ansible/issues/44708
+  - name: get locale list
+    shell: "locale -a | grep -i {{ nakahiro386_locale | regex_replace('-', '') | quote }}"
+    register: get_locale_list
+    check_mode: no
+    changed_when: no
+    failed_when: no
+    when:
+      - ansible_os_family == 'RedHat'
+      - ansible_distribution_major_version|int < 8
+
+  - name: create locale
+    command: "localedef -i {{ nakahiro386_locale | regex_replace('(.*)\\..*', '\\1') | quote }} -f {{ nakahiro386_locale | regex_replace('.*\\.(.*)', '\\1') | quote }} {{ nakahiro386_locale | quote }}"
+    when:
+      - ansible_os_family == 'RedHat'
+      - ansible_distribution_major_version|int < 8
+      - get_locale_list.rc != 0
 
   - include_tasks: "locale_{{ ansible_os_family.lower() }}.yml"
     when:

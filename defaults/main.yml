@@ -3,5 +3,8 @@
 nakahiro386_locale: "ja_JP.UTF-8"
 nakahiro386_ubuntu_lang_packs:
   - 'language-pack-ja'
+nakahiro386_centos_lang_packs:
+  - 'langpacks-ja'
+  - 'glibc-langpack-ja'
 nakahiro386_locale_file_location_debian: "/etc/default/locale"
 nakahiro386_locale_file_location_redhat: "/etc/sysconfig/i18n"
